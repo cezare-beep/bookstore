@@ -103,15 +103,38 @@ def get_authors(db):
 def authors_wiki(db, author_id):
     author = db.query(Author).filter_by(id=author_id).one()
     url = db.query(Author.wiki).filter_by(id=author_id).one()[0]
-    response = requests.get(url)
-    doc = BeautifulSoup(response.text, 'lxml')
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
+    response = requests.get(url, headers=headers)
+    doc = BeautifulSoup(response.text, 'html.parser')
+
     intro = doc.body.find_all('p')[2].text
+
     labels = doc.body.find_all('th', attrs={'class': 'infobox-label'})
-    labels_list = [x.text for x in labels]
-    data = doc.body.find_all('td', attrs={'class': 'infobox-data'})
-    data_list = [x.text for x in data]
+    labels_list = []
+    data_list = []
+
+    for label in labels:
+        labels_list.append(label.text.strip())
+        data_cell = label.find_next_sibling('td')
+        if data_cell:
+            for style_tag in data_cell.find_all('style'):
+                style_tag.decompose()
+            for span in data_cell.find_all('span', class_='mw-parser-output'):
+                span.unwrap()
+            clean_text = data_cell.get_text(' ', strip=True)
+            data_list.append(clean_text)
+        else:
+            data_list.append('')
+
     return render_template('about.html', author=author, about=intro, data=data_list, labels=labels_list)
 
+
+@app.route('/contacts')
+def contacts():
+    return render_template('contacts.html')
+    
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
