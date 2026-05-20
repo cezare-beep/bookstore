@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="display: flex" class="wrapper">
+  <div class="left-column">
+    <img width=200 style="margin-right: 15px; margin-top: 5px" src='/{{book["icon_book"]}}' alt="Book image"/>
+  </div>
+  <div class="right-column"><!-- Product Description -->
+  <div class="product-description">
+  <h1>{{book["book"]}}</h1>
+    {{book["description"]}}
+  </div>
+  <div>
+      <a id='download' class="btn btn-primary" href="{{ url_for('return_files', filename=value) }}.pdf" target="blank" >Download introduction PDF</a>
+  </div>
+  </div>
+</div>
+{% endblock %}

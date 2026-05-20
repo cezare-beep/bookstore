@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form class="form-group" action="{{ url_for('search_book') }}" method="get">
+  <input class="form-control" name="book" placeholder="Enter the book name..." type="search">
+    <button class="btn btn-primary" type="submit">Search</button>
+</form>
+<div class="col-md-8 products">
+	<div class="row">
+{% for item in books %}
+		<div class="col-sm-4">
+			<div id="{{item['book']}}" class="product">
+				<div class="product-img">
+					<a href="{{ url_for('get_book', book_id=item['id'], filename=item['book']) }}"><img width="120" src='{{item["icon_book"]}}' alt="Book image"></a>
+				</div>
+				<p class="product-title">
+					<a href="{{ url_for('get_book', book_id=item['id'], filename=item['book']) }}">{{item["name"]}}</a>
+				</p>
+				<p class="product-desc">
+					<a href="{{ url_for('get_book', book_id=item['id'], filename=item['book']) }}">{{item["book"]}}</a>
+
+				</p>
+					<p class="product-download">
+						<a href="{{ url_for('get_book', book_id=item['id'], filename=item['book']) }}">
+							Download >>
+						</a>
+					</p>
+			</div>
+		</div>
+{% endfor %}
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form class="form-group" action="{{ url_for('search_book') }}" method="get">
+  <input class="form-control" name="book" placeholder="Enter the book name..." type="search">
+  <button class="btn btn-primary" type="submit">Search</button>
+</form>
+{% if books %}
+{% for book in books %}
+<div style="display: flex" class="wrapper">
+  <div class="left-column">
+    <a href="{{ url_for('get_book', book_id=book['id'], filename=book['book']) }}">
+      <img width=200 style="margin-right: 15px; margin-top: 5px" src='/{{book["icon_book"]}}' alt="Book image"/>
+    </a>
+  </div>
+  <div class="right-column"><!-- Product Description -->
+  <div class="product-description">
+    <a href="{{ url_for('get_book', book_id=book['id'], filename=book['book']) }}" class="text">
+      <h2>{{book["book"]}}</h2>
+    </a>
+    {{book["description"]}}
+    <a href="{{ url_for('get_book', book_id=book['id'], filename=book['book']) }}" class="text">
+      <div>
+        Download >>>
+      </div>
+    </a>
+  </div>
+  </div>
+</div>
+{% endfor %}
+{% else %}
+<div>
+  <h4>
+    Nothing was found. Please try again!
+  </h4>
+</div>
+{% endif %}
+
+{% endblock %}

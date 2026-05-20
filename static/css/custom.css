@@ -1,0 +1,85 @@
+a.text:active,
+a.text:hover,
+a.text {
+  color: #424242;
+  text-decoration: none;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.container {
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 15px;
+  display: block-inline;
+}
+
+.col-md-8 {
+    max-width: 75%;
+}
+
+.col-md-8 products {
+    margin-right: 0;
+}
+
+img {
+	height: 200px;
+	width: auto;
+}
+
+.img2 {
+	height: 200px;
+	width: auto;
+	margin: 5px 25px 25px 0;
+}
+
+.wrapper {
+    display: flex;
+}
+
+.content{
+	margin-top: 50px;
+}
+.product {
+	background: #fff none repeat scroll 0 0;
+	border: 1px solid #c0c0c0;
+	height: 390px;
+	overflow: hidden;
+	padding: 25px 15px;
+	position: relative;
+	text-align: center;
+	transition: all 0.5s ease 0s;
+	margin-bottom: 20px;
+}
+.product:hover {
+	box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+}
+.product-img {
+	height: 200px;
+}
+.product-title a {
+	color: #000;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+.product-desc {
+    max-height: 60px;
+    overflow: hidden;
+}
+
+.product-download {
+	bottom: 15px;
+	left: 0;
+	position: absolute;
+	width: 100%;
+	color: #d51e08;
+	font-size: 16px;
+	font-weight: 500;
+}
+
+
