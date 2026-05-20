@@ -8,7 +8,7 @@ from flask import *
 from sqlalchemy import create_engine, exc
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import sessionmaker
-from db_setup import Book, Author, Base
+from db_setup import Book, Author, Base, User
 from flask_restful import abort, Api, Resource
 from flask_wtf import FlaskForm
 from flask_login import *
