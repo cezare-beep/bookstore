@@ -13,6 +13,13 @@
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="{{ url_for('index') }}">Main</a>
         <a class="navbar-brand" href="{{ url_for('get_authors') }}">Authors</a>
+        <a class="navbar-brand" href="{{ url_for('contacts') }}">Contacts</a>
+    {% if current_user.is_anonymous %}
+        <a class="navbar-brand" href="{{ url_for('login') }}">Sign in</a>
+        <a href="{{ url_for('register') }}">Register</a>
+    {% else %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+    {% endif %}
     </nav>
 </header>
 <main role="main" class="container">
