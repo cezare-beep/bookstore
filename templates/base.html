@@ -5,23 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" >
-    <link rel="stylesheet" type="text/css" href="../static/css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/custom.css') }}">
     <title>{{title}}</title>
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="{{ url_for('index') }}">Main</a>
-        <a class="navbar-brand" href="{{ url_for('get_authors') }}">Authors</a>
-        <a class="navbar-brand" href="{{ url_for('contacts') }}">Contacts</a>
-    {% if current_user.is_anonymous %}
-        <a class="navbar-brand" href="{{ url_for('login') }}">Sign in</a>
-        <a href="{{ url_for('register') }}">Register</a>
-    {% else %}
-        <a href="{{ url_for('logout') }}">Logout</a>
-    {% endif %}
-    </nav>
-</header>
+<div class="hero-banner">
+    <div>
+        <h1>Bookstore EKB</h1>
+        <p>Best price here</p>
+        <div class="banner-nav">
+            <a href="{{ url_for('index') }}" class="banner-btn">📚 Главная</a>
+            <a href="{{ url_for('get_authors') }}" class="banner-btn">✍️ Авторы</a>
+            <a href="{{ url_for('contacts') }}" class="banner-btn">📍 Контакты</a>
+            {% if current_user.is_anonymous %}
+                <a href="{{ url_for('login') }}" class="banner-btn">🔐 Вход</a>
+                <a href="{{ url_for('register') }}" class="banner-btn">📝 Регистрация</a>
+            {% else %}
+                <a href="{{ url_for('logout') }}" class="banner-btn">🚪 Выход</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
 <main role="main" class="container">
     {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -34,5 +39,9 @@
     {% endwith %}
     {% block content %}{% endblock %}
 </main>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>

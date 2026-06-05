@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div style="display: flex;">
+<div class="authors-grid">
     {% for item in authors %}
-<div>
-    <a align="center" href="{{ url_for('authors_wiki', author_id=item['id']) }}" class="text">
-        <h2>{{item["name"]}}</h2>
-    </a>
-    <a href="{{ url_for('authors_wiki', author_id=item['id']) }}">
-        <img class="img2" src='{{item["photo"]}}' alt="Author's photo">
-    </a>
-</div>
+    <div class="author-card">
+        <a href="{{ url_for('authors_wiki', author_id=item['id']) }}">
+            <img src='{{item["photo"]}}' alt="{{item['name']}}">
+        </a>
+        <h2>
+            <a href="{{ url_for('authors_wiki', author_id=item['id']) }}">{{item["name"]}}</a>
+        </h2>
+        <a href="{{ url_for('authors_wiki', author_id=item['id']) }}" class="btn-author">
+            Биография →
+        </a>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}

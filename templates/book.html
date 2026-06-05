@@ -1,18 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div style="display: flex" class="wrapper">
-  <div class="left-column">
-    <img width=200 style="margin-right: 15px; margin-top: 5px" src='/{{book["icon_book"]}}' alt="Book image"/>
-  </div>
-  <div class="right-column"><!-- Product Description -->
-  <div class="product-description">
-  <h1>{{book["book"]}}</h1>
-    {{book["description"]}}
-  </div>
-  <div>
-      <a id='download' class="btn btn-primary" href="{{ url_for('return_files', filename=value) }}.pdf" target="blank" >Download introduction PDF</a>
-  </div>
-  </div>
+<div class="book-detail">
+    <div class="book-detail-wrapper">
+        <div class="book-detail-image">
+            <img src='/{{book["icon_book"]}}' alt="{{book['book']}}">
+        </div>
+        <div class="book-detail-info">
+            <h1>{{book["book"]}}</h1>
+            <div class="book-description">
+                {{book["description"]}}
+            </div>
+            <div class="book-download">
+                <a id='download' class="btn-download" href="{{ url_for('return_files', filename=value) }}.pdf" target="_blank">
+                    📖 Скачать ознакомительный фрагмент →
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

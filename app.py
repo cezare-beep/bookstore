@@ -15,7 +15,7 @@ from flask_login import *
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from config import Config
-from werkzeug.urls import url_parse
+from urllib.parse import urlparse as url_parse
 from models import User
 
 app = Flask(__name__)
@@ -103,33 +103,53 @@ def get_authors(db):
 def authors_wiki(db, author_id):
     author = db.query(Author).filter_by(id=author_id).one()
     url = db.query(Author.wiki).filter_by(id=author_id).one()[0]
-
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
-    response = requests.get(url, headers=headers)
-    doc = BeautifulSoup(response.text, 'html.parser')
 
-    intro = doc.body.find_all('p')[2].text
+    try:
+        response = requests.get(url, headers=headers, timeout=10)
+        doc = BeautifulSoup(response.text, 'html.parser')
 
-    labels = doc.body.find_all('th', attrs={'class': 'infobox-label'})
-    labels_list = []
-    data_list = []
-
-    for label in labels:
-        labels_list.append(label.text.strip())
-        data_cell = label.find_next_sibling('td')
-        if data_cell:
-            for style_tag in data_cell.find_all('style'):
-                style_tag.decompose()
-            for span in data_cell.find_all('span', class_='mw-parser-output'):
-                span.unwrap()
-            clean_text = data_cell.get_text(' ', strip=True)
-            data_list.append(clean_text)
+        if doc.body is None:
+            intro = "Биография временно недоступна. Пожалуйста, посетите Wikipedia для получения информации."
         else:
-            data_list.append('')
+            paragraphs = doc.body.find_all('p')
+            intro = ""
+            for p in paragraphs:
+                text = p.get_text(strip=True)
+                if len(text) > 100:
+                    intro = text
+                    break
 
-    return render_template('about.html', author=author, about=intro, data=data_list, labels=labels_list)
+            if not intro:
+                intro = "Биография временно недоступна. Пожалуйста, посетите Wikipedia для получения информации."
 
+        labels_list = []
+        data_list = []
+
+        infobox = doc.find('table', class_='infobox')
+
+        if infobox:
+            labels = infobox.find_all('th', class_='infobox-label')
+            for label in labels:
+                labels_list.append(label.get_text(strip=True))
+                data_cell = label.find_next_sibling('td')
+                if data_cell:
+                    for style_tag in data_cell.find_all('style'):
+                        style_tag.decompose()
+                    for span in data_cell.find_all('span', class_='mw-parser-output'):
+                        span.unwrap()
+                    clean_text = data_cell.get_text(' ', strip=True)
+                    data_list.append(clean_text[:200])
+                else:
+                    data_list.append('')
+
+        return render_template('about.html', author=author, about=intro, data=data_list, labels=labels_list)
+
+    except Exception as e:
+        print(f"Ошибка парсинга: {e}")
+        intro = "Информация временно недоступна. Пожалуйста, посетите Wikipedia для получения биографии."
+        return render_template('about.html', author=author, about=intro, data=[], labels=[])
 
 @app.route('/contacts')
 def contacts():

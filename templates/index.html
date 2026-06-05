@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form class="form-group" action="{{ url_for('search_book') }}" method="get">
-  <input class="form-control" name="book" placeholder="Enter the book name..." type="search">
-    <button class="btn btn-primary" type="submit">Search</button>
-</form>
+<div class="search-section">
+    <h3>🔍 Find your book</h3>
+    <form class="search-form" action="{{ url_for('search_book') }}" method="get">
+        <input class="search-input" name="book" placeholder="Enter a book name" type="search">
+        <button class="search-btn" type="submit">Search →</button>
+    </form>
+</div>
 <div class="col-md-8 products">
 	<div class="row">
 {% for item in books %}
