@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}{{ author.name }} - BookStore{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Фото автора -->
+        <div class="col-md-4">
+            <div class="book-card p-3 text-center">
+                {% if author.photo %}
+                    <img src="{{ url_for('static', filename='uploads/' + author.photo) }}" 
+                         class="img-fluid rounded-circle mb-3"
+                         alt="{{ author.name }}"
+                         style="width: 250px; height: 250px; object-fit: cover;">
+                {% else %}
+                    <img src="https://via.placeholder.com/250x250/3498db/ffffff?text={{ author.name|urlencode }}" 
+                         class="img-fluid rounded-circle mb-3"
+                         alt="{{ author.name }}"
+                         style="width: 250px; height: 250px; object-fit: cover;">
+                {% endif %}
+                
+                {% if author.wikipedia_url %}
+                    <a href="{{ author.wikipedia_url }}" target="_blank" class="btn btn-outline-primary mt-3">
+                        <i class="fab fa-wikipedia-w me-2"></i>Wikipedia
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Биография -->
+        <div class="col-md-8">
+            <h1 class="display-4 fw-bold mb-4">{{ author.name }}</h1>
+            
+            <div class="bg-light p-4 rounded mb-4">
+                <h4><i class="fas fa-book me-2"></i>Биография</h4>
+                <p class="lead" style="line-height: 1.8;">{{ author.biography }}</p>
+            </div>
+            
+            <div class="mt-4">
+                <h3><i class="fas fa-book-open me-2"></i>Книги автора</h3>
+                <div class="row g-4 mt-2">
+                    {% for book in books %}
+                    <div class="col-md-6">
+                        <a href="{{ url_for('book', book_id=book.id) }}" class="book-card-link">
+                            <div class="book-card d-flex align-items-center p-3">
+                                {% if book.icon %}
+                                    <img src="{{ url_for('static', filename='uploads/' + book.icon) }}" 
+                                         style="width: 60px; height: 80px; object-fit: cover; border-radius: 8px;"
+                                         alt="{{ book.name }}">
+                                {% else %}
+                                    <div style="width: 60px; height: 80px; background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); border-radius: 8px;"></div>
+                                {% endif %}
+                                <div class="ms-3">
+                                    <h5 class="mb-1">{{ book.name }}</h5>
+                                    <small class="text-muted">{{ book.description[:50] }}...</small>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Вход - BookStore{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-card">
+        <div class="text-center mb-4">
+            <i class="fas fa-book-open fa-3x" style="color: var(--primary-color);"></i>
+            <h2 class="mt-3">Добро пожаловать!</h2>
+            <p class="text-muted">Войдите в свой аккаунт</p>
+        </div>
+        
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            
+            <div class="mb-3">
+                {{ form.login.label(class="form-label") }}
+                {{ form.login(class="form-control", placeholder="Введите логин") }}
+                {% for error in form.login.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+            </div>
+            
+            <div class="mb-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control", placeholder="Введите пароль") }}
+                {% for error in form.password.errors %}
+                    <div class="text-danger small mt-1">{{ error }}</div>
+                {% endfor %}
+            </div>
+            
+            <div class="mb-3 form-check">
+                {{ form.remember(class="form-check-input") }}
+                {{ form.remember.label(class="form-check-label") }}
+            </div>
+            
+            <div class="d-grid gap-2">
+                {{ form.submit(class="btn btn-primary btn-lg") }}
+            </div>
+        </form>
+        
+        <hr class="my-4">
+        
+        <div class="text-center">
+            <p class="mb-0">Нет аккаунта? <a href="{{ url_for('register') }}" class="text-decoration-none">Зарегистрируйтесь</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
